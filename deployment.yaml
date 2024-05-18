@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: git-devops-pipeline-app
-        image: lance0821/devops-pipeline:CHANGEME
+        image: lance0821/devops-pipeline:1.0.0-42
         resources:
           limits:
             memory: "256Mi"
