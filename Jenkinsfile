@@ -1,0 +1,78 @@
+pipeline {
+    agent {
+        kubernetes {
+            yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    jenkins/label: jnlp-slave
+spec:
+  containers:
+  - name: jnlp
+    image: jenkins/inbound-agent:latest
+    args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
+    tty: true
+    volumeMounts:
+      - name: workspace-volume
+        mountPath: /home/jenkins/agent
+  - name: podman
+    image: quay.io/podman/stable
+    command:
+      - cat
+    tty: true
+    securityContext:
+      privileged: true
+    volumeMounts:
+      - name: podman-sock
+        mountPath: /run/podman/podman.sock
+      - name: podman-storage
+        mountPath: /var/lib/containers/storage
+  volumes:
+  - name: workspace-volume
+    emptyDir: {}
+  - name: podman-sock
+    hostPath:
+      path: /run/podman/podman.sock
+      type: Socket
+  - name: podman-storage
+    emptyDir: {}
+"""
+        }
+    }
+
+    environment {
+        APP_NAME = 'devops-pipeline'
+    }
+    stages {
+        stage('Cleanup Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+        stage('Checkout Code From Github') {
+            steps {
+                git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/lance0821/gitops-pipeline.git'
+            }
+        }
+        stage('Update the Deployment Tags') {
+            steps {
+                sh """
+                cat deployment.yaml | sed 's|{{IMAGE_TAG}}|${IMAGE_TAG}|' > deployment.yaml
+                """
+            }
+        }
+        stage('Push the changed deployment file to git') {
+            steps {
+                sh """
+                git config --global user.email "lance0821@gmail.com"
+                git config --global user.name "Lance Lewandowski"
+                git add deployment.yaml
+                git commit -m "Updated deployment.yaml with new image tag"
+                """
+                withCredentials([gitUsernamePassword(credentialsId: 'github-credentials', passwordVariable: 'GITHUB_PASSWORD', usernameVariable: 'GITHUB_USER')]) {
+                    sh "git push https://github.com/lance0821/gitops-pipeline main"
+            }
+        }
+    }
+}
