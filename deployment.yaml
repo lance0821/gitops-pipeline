@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: complete-production-e2e-deployment
+  name: git-devops-pipeline-deployment
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: complete-production-e2e-app
+      app: git-devops-pipeline-app
   template:
     metadata:
       labels:
-        app: complete-production-e2e-app
+        app: git-devops-pipeline-app
     spec:
       containers:
-      - name: complete-production-e2e-app
-        image: dmancloud/complete-production-e2e-pipeline:CHANGEME
+      - name: git-devops-pipeline-app
+        image: lance0821/devops-pipeline:CHANGEME
         resources:
           limits:
             memory: "256Mi"
