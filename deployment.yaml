@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: git-devops-pipeline-app
-          image: docker.io/lance0821/devops-pipeline:docker.io/lance0821/devops-pipeline:1.0.0-70
+          image: docker.io/lance0821/devops-pipeline:1.0.0-70/lance0821/devops-pipeline:1.0.0-70
           resources:
             limits:
               memory: '256Mi'
