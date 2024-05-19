@@ -67,8 +67,8 @@ spec:
                 script {
                     def newTag = "${params.IMAGE_TAG}"
                     def fileContent = readFile 'deployment.yaml'
-                    // Use single quotes to avoid interpolation issues
-                    def updatedContent = fileContent.replaceAll(/(docker\.io\/lance0821\/devops-pipeline):[0-9a-zA-Z\.\-]+/, '$1:' + newTag)
+                    // Correct regex and replacement logic
+                    def updatedContent = fileContent.replaceAll('docker.io/lance0821/devops-pipeline:[0-9a-zA-Z\\.\\-]+', "docker.io/lance0821/devops-pipeline:${newTag}")
                     writeFile file: 'deployment.yaml', text: updatedContent
                 }
             }
