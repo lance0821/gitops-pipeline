@@ -75,7 +75,7 @@ spec:
                     // Print the original content for debugging
                     println("Original deployment.yaml content:\n${fileContent}")
                     
-                    // Use variables in the regex pattern for flexibility
+                    // Correct replacement to avoid duplicating the repository path
                     def updatedContent = fileContent.replaceAll("image: docker.io/${DOCKER_USERNAME}/${REPOSITORY_NAME}:.*", "image: ${fullImageName}")
                     
                     // Print the updated content for debugging
