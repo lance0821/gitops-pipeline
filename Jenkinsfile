@@ -77,7 +77,7 @@ spec:
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'GITHUB_PASSWORD', usernameVariable: 'GITHUB_USER')]) {
                     script {
-                        def gitUrl = "https://${GITHUB_USER}:${GITHUB_PASSWORD}@github.com/lance0821/gitops-pipeline.git"
+                        def gitUrl = "https://${URLEncoder.encode(GITHUB_USER, 'UTF-8')}:${URLEncoder.encode(GITHUB_PASSWORD, 'UTF-8')}@github.com/lance0821/gitops-pipeline.git"
                         sh """
                         git config --global user.email "lance0821@gmail.com"
                         git config --global user.name "Lance Lewandowski"
