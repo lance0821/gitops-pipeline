@@ -71,6 +71,7 @@ spec:
                     def newTag = "${params.IMAGE_TAG}"
                     def fullImageName = "${IMAGE_NAME}:${newTag}"
                     def fileContent = readFile 'deployment.yaml'
+                    // Replace the image line with the new image name
                     def updatedContent = fileContent.replaceAll(/image:\s*.*$/, "image: ${fullImageName}")
                     writeFile file: 'deployment.yaml', text: updatedContent
                 }
@@ -82,9 +83,7 @@ spec:
                 withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'GITHUB_PASSWORD', usernameVariable: 'GITHUB_USER')]) {
                     script {
                         def gitUrl = "https://${URLEncoder.encode(GITHUB_USER, 'UTF-8')}:${URLEncoder.encode(GITHUB_PASSWORD, 'UTF-8')}@github.com/lance0821/gitops-pipeline.git"
-                        def imageTagParts = params.IMAGE_TAG.split(':')
-                        def shortTag = imageTagParts.size() > 1 ? imageTagParts[1] : params.IMAGE_TAG
-                        def commitMessage = "Updated deployment.yaml with new image tag: ${shortTag}"
+                        def commitMessage = "Updated deployment.yaml with new image tag: ${params.IMAGE_TAG}"
                         sh """
                         git config --global user.email "lance0821@gmail.com"
                         git config --global user.name "Lance Lewandowski"
