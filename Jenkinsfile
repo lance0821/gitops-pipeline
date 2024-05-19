@@ -71,8 +71,16 @@ spec:
                     def newTag = params.IMAGE_TAG
                     def fullImageName = "${IMAGE_NAME}:${newTag}"
                     def fileContent = readFile 'deployment.yaml'
-                    // Replace the image line with the new image name
-                    def updatedContent = fileContent.replaceAll(/image:\s*.*$/, "image: ${fullImageName}")
+                    
+                    // Print the original content for debugging
+                    println("Original deployment.yaml content:\n${fileContent}")
+                    
+                    // Correct replacement to avoid duplicating the repository path
+                    def updatedContent = fileContent.replaceAll(/image:.*$/, "image: ${fullImageName}")
+                    
+                    // Print the updated content for debugging
+                    println("Updated deployment.yaml content:\n${updatedContent}")
+                    
                     writeFile file: 'deployment.yaml', text: updatedContent
                 }
             }
