@@ -67,8 +67,8 @@ spec:
                 script {
                     def newTag = "${params.IMAGE_TAG}"
                     def fileContent = readFile 'deployment.yaml'
-                    fileContent = fileContent.replaceAll(/lance0821\/devops-pipeline:[0-9a-zA-Z\.\-]+/, newTag)
-                    writeFile file: 'deployment.yaml', text: fileContent
+                    def updatedContent = fileContent.replaceAll(/(docker\.io\/lance0821\/devops-pipeline):[0-9a-zA-Z\.\-]+/, "$1:${newTag}")
+                    writeFile file: 'deployment.yaml', text: updatedContent
                 }
             }
         }
