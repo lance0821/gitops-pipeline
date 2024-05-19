@@ -69,8 +69,11 @@ spec:
             steps {
                 script {
                     def newTag = params.IMAGE_TAG
+                    println("New Tag:\n${newTag}")
                     def fullImageNamePattern = "${IMAGE_NAME}:[0-9a-zA-Z\\-\\.]+"
+                    println("Full Image name pattern:\n${fullImageNamePattern}")
                     def newFullImageName = "${IMAGE_NAME}:${newTag}"
+                    println("New full image name:\n${newFullImageName}")
                     def fileContent = readFile 'deployment.yaml'
                     
                     // Print the original content for debugging
