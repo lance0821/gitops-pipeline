@@ -76,13 +76,16 @@ spec:
         stage('Push the changed deployment file to git') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'GITHUB_PASSWORD', usernameVariable: 'GITHUB_USER')]) {
-                    sh """
-                    git config --global user.email "lance0821@gmail.com"
-                    git config --global user.name "Lance Lewandowski"
-                    git add deployment.yaml
-                    git commit -m "Updated deployment.yaml with new image tag"
-                    git push https://${GITHUB_USER}:${GITHUB_PASSWORD}@github.com/lance0821/gitops-pipeline main
-                    """
+                    script {
+                        def gitUrl = "https://${GITHUB_USER}:${GITHUB_PASSWORD}@github.com/lance0821/gitops-pipeline.git"
+                        sh """
+                        git config --global user.email "lance0821@gmail.com"
+                        git config --global user.name "Lance Lewandowski"
+                        git add deployment.yaml
+                        git commit -m "Updated deployment.yaml with new image tag"
+                        git push ${gitUrl} main
+                        """
+                    }
                 }
             }
         }
