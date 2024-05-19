@@ -6,7 +6,6 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: 'nginx'
   rules:
     - host: devopstest.lancelewandowski.com
       http:
@@ -17,4 +16,4 @@ spec:
               service:
                 name: devops-pipeline-service
                 port:
-                  number: 8080
+                  number: 80
