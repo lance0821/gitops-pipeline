@@ -70,7 +70,7 @@ spec:
                 script {
                     // Expecting only the numerical tag part in the IMAGE_TAG parameter
                     def newTag = params.IMAGE_TAG
-                    def fullImageName = "${IMAGE_NAME}:${newTag}"
+                    def fullImageName = "${newTag}"
                     def fullImageNamePattern = "${IMAGE_NAME}:[0-9a-zA-Z\\-\\.]+"
                     
                     // Debug statements
