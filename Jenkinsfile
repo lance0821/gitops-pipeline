@@ -75,15 +75,13 @@ spec:
                     // Print the original content for debugging
                     println("Original deployment.yaml content:\n${fileContent}")
                     
-                    // Perform the replacement and debug the pattern matching
-                    if (fileContent.contains("image:")) {
-                        def updatedContent = fileContent.replaceAll(/image:\s*.*$/, "image: ${fullImageName}")
-                        // Print the updated content for debugging
-                        println("Updated deployment.yaml content:\n${updatedContent}")
-                        writeFile file: 'deployment.yaml', text: updatedContent
-                    } else {
-                        error("Pattern 'image:' not found in the file.")
-                    }
+                    // Correct replacement to avoid duplicating the repository path
+                    def updatedContent = fileContent.replaceAll(/(image:.*\/.*):.*/, "\$1:${newTag}")
+                    
+                    // Print the updated content for debugging
+                    println("Updated deployment.yaml content:\n${updatedContent}")
+                    
+                    writeFile file: 'deployment.yaml', text: updatedContent
                 }
             }
         }
