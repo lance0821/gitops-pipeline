@@ -68,7 +68,7 @@ spec:
         stage('Update the Deployment Tags') {
             steps {
                 script {
-                    def newTag = "${params.IMAGE_TAG}"
+                    def newTag = params.IMAGE_TAG
                     def fullImageName = "${IMAGE_NAME}:${newTag}"
                     def fileContent = readFile 'deployment.yaml'
                     // Replace the image line with the new image name
@@ -87,6 +87,7 @@ spec:
                         sh """
                         git config --global user.email "lance0821@gmail.com"
                         git config --global user.name "Lance Lewandowski"
+                        git pull origin main
                         git add deployment.yaml
                         git commit -m "${commitMessage}"
                         git push ${gitUrl} main
