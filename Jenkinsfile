@@ -69,14 +69,15 @@ spec:
             steps {
                 script {
                     def newTag = params.IMAGE_TAG
-                    def fullImageName = "${IMAGE_NAME}:${newTag}"
+                    def fullImageNamePattern = "${IMAGE_NAME}:[0-9a-zA-Z\\-\\.]+"
+                    def newFullImageName = "${IMAGE_NAME}:${newTag}"
                     def fileContent = readFile 'deployment.yaml'
                     
                     // Print the original content for debugging
                     println("Original deployment.yaml content:\n${fileContent}")
                     
                     // Use regex to capture the current image name and replace only the tag part
-                    def updatedContent = fileContent.replaceAll("(image: docker.io/${DOCKER_USERNAME}/${REPOSITORY_NAME}:)[0-9a-zA-Z\\-\\.]+", "\$1${newTag}")
+                    def updatedContent = fileContent.replaceAll(fullImageNamePattern, newFullImageName)
                     
                     // Print the updated content for debugging
                     println("Updated deployment.yaml content:\n${updatedContent}")
