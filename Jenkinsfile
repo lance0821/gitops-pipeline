@@ -75,8 +75,8 @@ spec:
                     // Print the original content for debugging
                     println("Original deployment.yaml content:\n${fileContent}")
                     
-                    // Correct replacement to avoid duplicating the repository path
-                    def updatedContent = fileContent.replaceAll("image: docker.io/${DOCKER_USERNAME}/${REPOSITORY_NAME}:.*", "image: ${fullImageName}")
+                    // Use regex to capture the current image name and replace only the tag part
+                    def updatedContent = fileContent.replaceAll("(image: docker.io/${DOCKER_USERNAME}/${REPOSITORY_NAME}:)[0-9a-zA-Z\\-\\.]+", "\$1${newTag}")
                     
                     // Print the updated content for debugging
                     println("Updated deployment.yaml content:\n${updatedContent}")
