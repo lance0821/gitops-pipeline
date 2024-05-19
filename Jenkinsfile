@@ -43,7 +43,6 @@ spec:
 
     environment {
         APP_NAME = 'devops-pipeline'
-        IMAGE_TAG = "${params.IMAGE_TAG}" // Assume IMAGE_TAG is passed as a parameter
     }
 
     parameters {
@@ -66,7 +65,7 @@ spec:
         stage('Update the Deployment Tags') {
             steps {
                 script {
-                    def newTag = "${IMAGE_TAG}"
+                    def newTag = "${params.IMAGE_TAG}"
                     def fileContent = readFile 'deployment.yaml'
                     fileContent = fileContent.replaceAll(/lance0821\/devops-pipeline:[0-9a-zA-Z\.\-]+/, newTag)
                     writeFile file: 'deployment.yaml', text: fileContent
