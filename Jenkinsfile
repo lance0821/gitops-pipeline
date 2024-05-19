@@ -78,11 +78,12 @@ spec:
                 withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'GITHUB_PASSWORD', usernameVariable: 'GITHUB_USER')]) {
                     script {
                         def gitUrl = "https://${URLEncoder.encode(GITHUB_USER, 'UTF-8')}:${URLEncoder.encode(GITHUB_PASSWORD, 'UTF-8')}@github.com/lance0821/gitops-pipeline.git"
+                        def commitMessage = "Updated deployment.yaml with new image tag: ${params.IMAGE_TAG}"
                         sh """
                         git config --global user.email "lance0821@gmail.com"
                         git config --global user.name "Lance Lewandowski"
                         git add deployment.yaml
-                        git commit -m "Updated deployment.yaml with new image tag"
+                        git commit -m "${commitMessage}"
                         git push ${gitUrl} main
                         """
                     }
