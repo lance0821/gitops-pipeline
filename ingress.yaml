@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: devops-pipeline-ingress
+  name: git-devops-pipeline-ingress
   namespace: default
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -14,6 +14,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: devops-pipeline-service
+                name: git-devops-pipeline-service
                 port:
                   number: 80

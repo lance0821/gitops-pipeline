@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: devops-pipeline-service
+  name: git-devops-pipeline-service
   namespace: default
 spec:
   selector:
-    app: devops-pipeline
+    app: git-devops-pipeline-app
   ports:
     - protocol: TCP
       port: 80
