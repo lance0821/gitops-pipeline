@@ -43,6 +43,9 @@ spec:
 
     environment {
         APP_NAME = 'devops-pipeline'
+        DOCKER_USERNAME = 'lance0821'
+        REPOSITORY_NAME = 'devops-pipeline'
+        IMAGE_NAME = "docker.io/${DOCKER_USERNAME}/${REPOSITORY_NAME}"
     }
 
     parameters {
@@ -66,9 +69,9 @@ spec:
             steps {
                 script {
                     def newTag = "${params.IMAGE_TAG}"
+                    def fullImageName = "${IMAGE_NAME}:${newTag}"
                     def fileContent = readFile 'deployment.yaml'
-                    // Correct regex and replacement logic
-                    def updatedContent = fileContent.replaceAll('docker.io/lance0821/devops-pipeline:[0-9a-zA-Z\\.\\-]+', "docker.io/lance0821/devops-pipeline:${newTag}")
+                    def updatedContent = fileContent.replaceAll(/image:\s*.*$/, "image: ${fullImageName}")
                     writeFile file: 'deployment.yaml', text: updatedContent
                 }
             }
