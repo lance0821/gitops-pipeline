@@ -43,7 +43,11 @@ spec:
 
     environment {
         APP_NAME = 'devops-pipeline'
-        IMAGE_TAG = "docker.io/lance0821/devops-pipeline:1.0.0-57" // Replace this with your actual image tag
+        IMAGE_TAG = "${params.IMAGE_TAG}" // Assume IMAGE_TAG is passed as a parameter
+    }
+
+    parameters {
+        string(name: 'IMAGE_TAG', defaultValue: '', description: 'The image tag to deploy')
     }
 
     stages {
@@ -61,9 +65,12 @@ spec:
 
         stage('Update the Deployment Tags') {
             steps {
-                sh """
-                sed -i 's|{{IMAGE_TAG}}|${IMAGE_TAG}|' deployment.yaml
-                """
+                script {
+                    def newTag = "${IMAGE_TAG}"
+                    def fileContent = readFile 'deployment.yaml'
+                    fileContent = fileContent.replaceAll(/lance0821\/devops-pipeline:[0-9a-zA-Z\.\-]+/, newTag)
+                    writeFile file: 'deployment.yaml', text: fileContent
+                }
             }
         }
 
