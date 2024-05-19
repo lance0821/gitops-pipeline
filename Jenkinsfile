@@ -76,7 +76,7 @@ spec:
                     println("Original deployment.yaml content:\n${fileContent}")
                     
                     // Correct replacement to avoid duplicating the repository path
-                    def updatedContent = fileContent.replaceAll(/(image:.*\/.*):.*/, "\$1:${newTag}")
+                    def updatedContent = fileContent.replaceAll(/image:\s*.*$/, "image: ${fullImageName}")
                     
                     // Print the updated content for debugging
                     println("Updated deployment.yaml content:\n${updatedContent}")
@@ -90,7 +90,7 @@ spec:
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'GITHUB_PASSWORD', usernameVariable: 'GITHUB_USER')]) {
                     script {
-                        def gitUrl = "https://${URLEncoder.encode(GITHUB_USER, 'UTF-8')}:${URLEncoder.encode(GITHUB_PASSWORD, 'UTF-8')}@github.com/lance0821/gitops-pipeline.git"
+                        def gitUrl = "https://${URLEncoder.encode(GITHUB_USER, 'UTF-UTF')}:${URLEncoder.encode(GITHUB_PASSWORD, 'UTF-UTF')}@github.com/lance0821/gitops-pipeline.git"
                         def commitMessage = "Updated deployment.yaml with new image tag: ${params.IMAGE_TAG}"
                         sh """
                         git config --global user.email "lance0821@gmail.com"
